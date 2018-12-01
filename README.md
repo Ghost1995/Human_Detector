@@ -1,7 +1,7 @@
 # Human Detector
 
-[![Build Status](https://travis-ci.org/anirudhtopiwala/Human_Detector.svg?branch=GMock_Extra_Credit_Ashwin)](https://travis-ci.org/anirudhtopiwala/Human_Detector)
-[![Coverage Status](https://coveralls.io/repos/github/anirudhtopiwala/Human_Detector/badge.svg?branch=GMock_Extra_Credit_Ashwin)](https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=GMock_Extra_Credit_Ashwin)
+[![Build Status](https://travis-ci.org/Ghost1995/Human_Detector.svg?branch=GMock_Extra_Credit_Ashwin)](https://travis-ci.org/Ghost1995/Human_Detector)
+[![Coverage Status](https://coveralls.io/repos/github/Ghost1995/Human_Detector/badge.svg?branch=GMock_Extra_Credit_Ashwin)](https://coveralls.io/github/Ghost1995/Human_Detector?branch=GMock_Extra_Credit_Ashwin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
@@ -18,42 +18,54 @@ We have used openCV as a third party library, which is covered under the 3-claus
 ## Algorithm and Outputs
 
 The goal of this project is to detect humans using a SVM classifier trained on HOG descriptors. As the name suggests there are three major components or classes in the project. The **Data class**, which is responsible for loading the training Data, the **Train class** which computes the HOG descriptors and trains the classifier and the **Detect class** which makes a bounding box around the detected human.
-Refer to the [class](https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Class.pdf) and the  [activity]( https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Activity.pdf) diagrams to understand the flow of the algorithm.
+Refer to the [class](https://github.com/Ghost1995/Human_Detector/blob/GMock_Extra_Credit_Ashwin/UML/revised/UML_Class.pdf) and the  [activity](https://github.com/Ghost1995/Human_Detector/blob/GMock_Extra_Credit_Ashwin/UML/revised/UML_Activity.pdf) diagrams to understand the flow of the algorithm.
 
 The algorithm starts with reading the positive (pos) images from the INRIA database to form the training data. Now, as the HOG descriptors requires a cropped input of the human to form a good descriptor, the training images were cropped using the bounding boxes obtained from the annotations file. To have a balanced descriptor, the negatives (neg) were formed by random cropping on the images obtained from the neg folder of the INRIA dataset. All the images were finally resized to have the same size, as this is very essential to the proper working of the classifier. 
 
 The HOG features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8), the number of descriptors were not enough to represent all the information in the image. This can be clearly observed in the comparison shown below. 
 
 <p align="center">
-<img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/Hog_cell_size_comaprison.png">
+<img src="https://github.com/Ghost1995/Human_Detector/blob/GMock_Extra_Credit_Ashwin/additional_files/Hog_cell_size_comaprison.png">
 </p>
 
 The HOG features for a cell size of (4,4) for some of the test images is shown below.
 
 <p align="center">
-<img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/hog.gif">
+<img src="https://github.com/Ghost1995/Human_Detector/blob/GMock_Extra_Credit_Ashwin/additional_files/hog.gif">
 </p>
 
 Once the descriptor for pos and neg images is concatenated, it is passed to the SVM classifier. After the classifier is trained, the detectMultiScale function of openCV is used to make the detection. The bounding box obtained is then adjusted to give the final prediction of the human. Some of the detections on the test images can be seen below. 
 
 <p align="center">
-<img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/detections.gif">
+<img src="https://github.com/Ghost1995/Human_Detector/blob/GMock_Extra_Credit_Ashwin/additional_files/detections.gif">
 </p>
 
 As we can see, the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be achieved by using [Non-maximum Suppression.](https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/). Some other optimization techniques are discussed [here](https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector). 
 
 ## License
 
+```
 MIT License
 
 Copyright (c) 2018 Anirudh Topiwala
 
-```
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 ## SIP Logs
@@ -114,7 +126,7 @@ sudo ldconfig
 
 ## Build Instructions
 ```
-git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/anirudhtopiwala/Human_Detector.git
+git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/Ghost1995/Human_Detector.git
 cd Human_Detector
 mkdir build
 cd build
@@ -125,7 +137,7 @@ make
 ## Build Instructions for Code Coverage
 ```
 sudo apt-get install lcov
-git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/anirudhtopiwala/Human_Detector.git
+git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/Ghost1995/Human_Detector.git
 cd Human_Detector
 mkdir build
 cd build
@@ -138,11 +150,11 @@ This generates an index.html page in the build/coverage sub-directory that can b
 ## Data Set up
 
 The user has three options here: 
-1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The size of the classifier is approximately 1 GB.
+1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/Ghost1995/Human_Detector/tree/GMock_Extra_Credit_Ashwin/data/classifier). The size of the classifier is approximately 1 GB.
 2) Use a default PreTrained classifier of OpenCV to run the program.
 3) Train your own classifier to run the program.
 
-For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of approximately 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
+For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of approximately 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/Ghost1995/Human_Detector/tree/GMock_Extra_Credit_Ashwin/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
 ```
 cd .. 
 cd data
@@ -171,13 +183,13 @@ cd <build folder of the module>
 
 ## Google Mock Test
 
-Google Mock Test is used to test interdependent classes and methods. This way if the base class or method is changed then the tests for the derived class need not be rewritten.
+Google Mock Test is used to test interdependent classes. This way if the base class is changed then the tests for the derived class need not be rewritten.
 
-For this project, Google mock test has been created for interdependent methods. In class Detect, method testClassifier calls all the other four methods of the class. We are only testing the modeName() and toggleMode() methods.
+For this project, Google mock test has been created for class Data. IN other words, class Data has been mocked and class Train has been tested which inherits from class Data. Specifically, in class Train, method readData() calls three methods of class Data. We are testing these methods in the order of their occurence.
 
-Using Google mock macro "EXPECT_CALL", it has been checked that the modeName() method is only called once and it returns a default value. It has also been checked that the toggleMode() method is only called once and it is called after the call to modeName() method.
+Using Google mock macro "EXPECT_CALL", it has been checked that the loadPosImages() method is only called once. Then, it has been checked that getImgListSize() method has been called once with input "positive" and it is called after loadPosImages() method. Then, it has been checked that loadNegImages() method has been called once. At last, it has been checked that getImgListSize() method has been called once with input "negative" and it is called after loadNegImages() method.
 
-Note that, for the Google mock testing, the classes have now been made dependent on each other with a is-a relationship.
+Note that, for the Google mock testing, the classes dependence is different than the one in master branch. Also note, that a new class has been introduced to the algorithm.
 
 ## How to Generate Doxygen Documentation
 
