@@ -168,10 +168,10 @@ void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
 /*
  * This is the third method of the class. It gives the size of the image list.
  */
-int Data::getImgListSize(const cv::String str) {
-    if (str == "positive") {
+int Data::getImgListSize(const std::string & str) {
+    if (str.compare("positive") == 0) {
         return posImgList.size();
-    } else if (str == "negative") {
+    } else if (str.compare("negative") == 0) {
         return negImgList.size();
     } else {
         std::cout << "Unexpected input to the function" << std::endl;
@@ -183,10 +183,10 @@ int Data::getImgListSize(const cv::String str) {
  * This is the fourth method of the class. It gives the image list as an
  * output.
  */
-std::vector<cv::Mat> Data::getImgList(const cv::String str) {
-    if (str == "positive") {
+std::vector<cv::Mat> Data::getImgList(const std::string & str) {
+    if (str.compare("positive") == 0) {
         return posImgList;
-    } else if (str == "negative") {
+    } else if (str.compare("negative") == 0) {
         return negImgList;
     } else {
         std::cout << "Unexpected input to the function" << std::endl;
