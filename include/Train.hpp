@@ -33,14 +33,16 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <opencv2/opencv.hpp>
 #include "Data.hpp"
 
 /*
  * @brief Train is a class
  */
-class Train : public Data {
+class Train {
  private:
+    Data & allData;
     cv::Ptr<cv::ml::SVM> classifier;
     std::vector<cv::Mat> gradientList;
 
@@ -49,12 +51,19 @@ class Train : public Data {
 
     /*
      * @brief This is the constructor for the class
+     *
+     * @param It takes a reference to class Data as input.
+     *
+     * @return It does not return any output. It initializes the classifier and
+     *         if successful, prints a statement.
      */
-    Train();
+    explicit Train(Data &);
 
     /*
      * @brief This is the first method of the class. It outputs the support
      *        vectors of the classifier.
+     *
+     * @param This method does not take any input.
      *
      * @result The output is a float vector containing the support vectors of
      *         the classifier.
@@ -69,8 +78,11 @@ class Train : public Data {
      *        extraction.
      * @param The second parameter is a vector containing the images whose
      *        feature are to be extracted.
+     *
+     * @return This method does not give any output. It just populates the
+     *         gradientList variable
      */
-    void getHOGfeatures(const cv::Size, const cv::String);
+    void getHOGfeatures(const cv::Size, const & std::string);
 
     /*
      * @brief This is the third method of the class. It trains the SVM
@@ -80,6 +92,9 @@ class Train : public Data {
      *        either save or not save the classifier.
      * @param The second parameter is the name of the classifier if it is to be
      *        saved.
+     *
+     * @return This method does not give any output. It trains the classifier
+     *         and store it as a private variable.
      */
     void trainSVM(const bool, const cv::String);
 
@@ -87,7 +102,9 @@ class Train : public Data {
      * @brief This is the fourth method of the class. It gives the size of the
      *        gradient list.
      *
-     * @return This function outputs the size of the gradient list.
+     * @param This method does not take any input.
+     *
+     * @return This method outputs the size of the gradient list.
      */
     int getListSize();
 
@@ -95,7 +112,10 @@ class Train : public Data {
      * @brief This is the fifth method of the class. It sets the classifier for
      *        the class.
      *
-     * @param This function takes the classifier as input.
+     * @param This method takes the classifier as input.
+     *
+     * @return This method does not give any output. It simply sets the value
+     *         for the private variable "classifier".
      */
     void setClassifier(const cv::Ptr<cv::ml::SVM>);
 
@@ -103,12 +123,38 @@ class Train : public Data {
      * @brief This is the sixth method of the class. It returns the classifier
      *        for the class.
      *
-     * @return This function returns the classifier.
+     * @param This method does not take any input.
+     *
+     * @return This method returns the classifier.
      */
     cv::Ptr<cv::ml::SVM> getDefaultClassifier();
 
     /*
+     * @brief This is the seventh method of the class. It reads all the data.
+     *
+     * @param The first parameter defines the path to the directory where all
+     *        annotations are defined.
+     * @param The second parameter defines the path to the directory where all
+     *        positive images are stored.
+     * @param The third parameter defines the path to the directory where all
+     *        negative images are stored.
+     * @param The fourth parameter defines the size of the window to be used
+     *        for resizing/cropping the images.
+     * @param The fifth parameter commands the method to either show or not
+     *        show the loaded positive images.
+     *
+     * @return This method returns a flag which states whether the data was
+     *         read successfully or not.
+     */
+    bool readData(const cv::String, const cv::String, const cv::String,
+                                                const cv::Size, const bool);
+
+    /*
      * @brief This is the destructor for the class
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not return any output. It just prints a statement.
      */
     ~Train();
 };
