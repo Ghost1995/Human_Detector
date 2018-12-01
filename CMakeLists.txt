@@ -15,7 +15,7 @@ if (COVERAGE)
     set(LCOV_REMOVE_EXTRA "'vendor/*'")
     setup_target_for_coverage(code_coverage test/detectHuman-test coverage)
     set(COVERAGE_SRCS app/main.cpp include/Detect.hpp include/Data.hpp
-                                                         include/Train.hpp)
+                                    include/Train.hpp include/MockData.hpp)
 
     SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
