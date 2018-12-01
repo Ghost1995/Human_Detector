@@ -35,7 +35,7 @@
 /*
  * This is the constructor for the class
  */
-Train::Train() {
+Train::Train(Data & _allData) : allData(_allData) {
     // Initialize classifier
     classifier = cv::ml::SVM::create();
     // Default values to train SVM
@@ -75,14 +75,14 @@ std::vector<float> Train::getClassifier() {
  * given images.
  */
 void Train::getHOGfeatures(const cv::Size windowSize,
-                           const cv::String imgType) {
+                           const std::string  & imgType) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
     hog.cellSize = cv::Size(4, 4);
     cv::Mat gray;
     std::vector<float> descriptors;
 
-    std::vector<cv::Mat> imgList = getImgList(imgType);
+    std::vector<cv::Mat> imgList = allData.getImgList(imgType);
     for (auto data : imgList)
         if (data.cols >= windowSize.width && data.rows >= windowSize.height) {
             // convert image to grayscale
@@ -147,6 +147,42 @@ void Train::setClassifier(const cv::Ptr<cv::ml::SVM> userClassifier) {
  */
 cv::Ptr<cv::ml::SVM> Train::getDefaultClassifier() {
     return classifier;
+}
+
+/*
+ * This is the seventh method of the class. It reads all the data.
+ */
+bool Train::readData(const cv::String anotPath, const cv::String  posDir,
+                     const cv::String negDir, const cv::Size size,
+                     const bool dispImg = false) {
+    bool state = true;
+    // Load positive images
+    if ((!anotPath.empty()) & (!posDir.empty())) {
+        std::cout << "Loading Positive Images" << std::endl;
+        allData.loadPosImages(anotPath, posDir, size, dispImg);
+        // Check if images were successfully loaded
+        if (allData.getImgListSize("positive") > 0) {
+            std::cout << "Loading Positive Images Complete" << std::endl;
+        } else {
+            std::cout << "No images found. " <<
+                    "Please check the Path Directory: " << posDir << std::endl;
+            state = false;
+        }
+    }
+
+    // Now load negative images
+    if (!negDir.empty()) {
+        std::cout << "Loading Negative Images" << std::endl;
+        allData.loadNegImages(negDir, size);
+        if (allData.getImgListSize("negative") > 0) {
+            std::cout << "Loading Negative Images Complete" << std::endl;
+        } else {
+            std::cout << "No images found. " <<
+                    "Please check the Path Directory: " << negDir << std::endl;
+            state = false;
+        }
+    }
+    return state;
 }
 
 /*
