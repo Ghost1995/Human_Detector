@@ -33,6 +33,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <opencv2/opencv.hpp>
 
 /*
@@ -45,6 +46,10 @@ class Data {
  public:
     /*
      * @brief This is the constructor for the class
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not give any output. It just prints a statement.
      */
     Data();
 
@@ -60,8 +65,11 @@ class Data {
      *        resizing the images.
      * @param The fourth parameter commands the method to either show or not
      *        show the loaded images.
+     *
+     * @return It does not return any output. This method just populates the
+     *         posImgList variable.
      */
-    void loadPosImages(const cv::String, const cv::String,
+    virtual void loadPosImages(const cv::String, const cv::String,
                        const cv::Size, const bool);
 
     /*
@@ -72,35 +80,42 @@ class Data {
      *        are to be loaded.
      * @param The second parameter defines the size of the window to be used
      *        for sampling the images.
+     *
+     * @return It does not return any output. This method just populates the
+     *         negImgList variable.
      */
-    void loadNegImages(const cv::String, const cv::Size);
+    virtual void loadNegImages(const cv::String, const cv::Size);
 
     /*
      * @brief This is the third method of the class. It gives the size of the
      *        image list.
      *
-     * @param This function takes the type of imgList - positive or negative as
+     * @param This method takes the type of imgList - positive or negative as
      *        input.
      *
-     * @return This function returns the size of the imgList asked for.
+     * @return This method returns the size of the imgList asked for.
      */
-    int getImgListSize(const cv::String);
+    virtual int getImgListSize(const & std::string);
 
     /*
      * @brief This is the fourth method of the class. It gives the image list
      *        as an output.
      *
-     * @param This function takes the type of imgList - positive or negative as
+     * @param This method takes the type of imgList - positive or negative as
      *        input.
      *
-     * @return This function returns the imgList asked for.
+     * @return This method returns the imgList asked for.
      */
-    std::vector<cv::Mat> getImgList(const cv::String);
+    std::vector<cv::Mat> getImgList(const & std::string);
 
     /*
      * @brief This is the destructor for the class
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not return any output. It just prints a statement.
      */
-    ~Data();
+    virtual ~Data();
 };
 
 #endif  // INCLUDE_DATA_HPP_
