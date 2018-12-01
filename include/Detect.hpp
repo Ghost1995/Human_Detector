@@ -35,12 +35,11 @@
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
-#include "Train.hpp"
 
 /*
  * @brief Detector is a class
  */
-class Detect : public Train {
+class Detect {
  private:
     enum Mode { Default, User } m;
 
@@ -49,22 +48,33 @@ class Detect : public Train {
 
     /*
      * @brief This is the constructor for the class
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not return any output. It just initializes the HOG
+     *         descriptors and then prints a statement.
      */
     Detect();
 
     /*
      * @brief This is the first method of the class. It toggles between the
      *        Default mode and User mode.
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not return any output. It just toggles the current mode.
      */
-    virtual void toggleMode();
+    void toggleMode();
 
     /*
      * @brief This is the second method of the class. It returns the name of
      *        the current mode.
      *
+     * @param It does not take any input.
+     *
      * @return This method returns the mode name as a string.
      */
-    virtual std::string modeName() const;
+    std::string modeName() const;
 
     /*
      * @brief This is the third method of the class. It returns the bounding
@@ -75,15 +85,19 @@ class Detect : public Train {
      * @return This method returns a vector containing the object Rect which
      *         defines the bounding box around the detected humans.
      */
-    virtual std::vector<cv::Rect> findHumans(const cv::InputArray);
+    std::vector<cv::Rect> findHumans(const cv::InputArray);
 
     /*
      * @brief This is the fourth method of the class. It adjusts the bounding
      *        box created around a detected human.
      *
      * @param This method takes the bounding box detected as input.
+     *
+     * @param It does not give any output. It adjusts the bounding boxes and
+     *        the updated values are stored in the input itself which is given
+     *        as a reference.
      */
-    virtual void adjustBoundingBox(cv::Rect &);
+    void adjustBoundingBox(cv::Rect &);
 
     /*
      * @brief This is the fifth method of the class. It is used to test the
@@ -98,15 +112,19 @@ class Detect : public Train {
      * @param The fourth parameter defines the mode to be used for testing the
      *        classifier.
      *
-     * @result This function returns the rectangle when testing.
+     * @result This method returns the rectangle when testing.
      */
-    virtual cv::Rect testClassifier(const cv::String, const cv::Size,
+    cv::Rect testClassifier(const cv::String, const cv::Size,
                             const bool, const std::string &);
 
     /*
      * @brief This is the destructor for the class
+     *
+     * @param It does not take any input.
+     *
+     * @return It does not return any output. It just prints a statement.
      */
-    virtual ~Detect();
+    ~Detect();
 };
 
 #endif  // INCLUDE_DETECT_HPP_
