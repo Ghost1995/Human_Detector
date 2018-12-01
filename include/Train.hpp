@@ -82,7 +82,7 @@ class Train {
      * @return This method does not give any output. It just populates the
      *         gradientList variable
      */
-    void getHOGfeatures(const cv::Size, const & std::string);
+    void getHOGfeatures(const cv::Size, const std::string &);
 
     /*
      * @brief This is the third method of the class. It trains the SVM

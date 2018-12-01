@@ -75,7 +75,7 @@ std::vector<float> Train::getClassifier() {
  * given images.
  */
 void Train::getHOGfeatures(const cv::Size windowSize,
-                           const std::string  & imgType) {
+                           const std::string & imgType) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
     hog.cellSize = cv::Size(4, 4);
