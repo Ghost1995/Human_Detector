@@ -95,7 +95,7 @@ class Data {
      *
      * @return This method returns the size of the imgList asked for.
      */
-    virtual int getImgListSize(const & std::string);
+    virtual int getImgListSize(const std::string &);
 
     /*
      * @brief This is the fourth method of the class. It gives the image list
@@ -106,7 +106,7 @@ class Data {
      *
      * @return This method returns the imgList asked for.
      */
-    std::vector<cv::Mat> getImgList(const & std::string);
+    std::vector<cv::Mat> getImgList(const std::string &);
 
     /*
      * @brief This is the destructor for the class
