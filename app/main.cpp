@@ -30,6 +30,7 @@
  *  @brief This is the main file which runs the detection algorithm
  */
 
+#include "Train.hpp"
 #include "Detect.hpp"
 
 /*
@@ -51,6 +52,8 @@ bool isEqual(std::string str1, std::string str2) {
  * @brief This is the main function to call the classes, execute the functions,
  *        and print the results.
  *
+ * @param This function does not take any inputs.
+ *
  * @return It returns a 0 just to avoid a warning.
  */
 int main() {
@@ -63,7 +66,9 @@ int main() {
     // Define a window/image size
     cv::Size windowSize = cv::Size(96, 160);
 
-    // Instantiate an object for class Detect
+    // Instantiate an object for class Data, class Train, and class Detect
+    Data data;
+    Train train(data);
     Detect detector;
 
     // Train or Test a classifier
@@ -98,29 +103,11 @@ int main() {
         if (negDir.empty())
             negDir = "../data/INRIAPerson/Train/neg/";
 
-        // Load positive images
-        std::cout << "Loading Positive Images" << std::endl;
-        detector.loadPosImages(static_cast<cv::String>(annotationPath),
-                            static_cast<cv::String>(posDir), windowSize, true);
-        // Check if images were successfully loaded
-        if (detector.getImgListSize("positive") > 0) {
-            std::cout << "Loading Positive Training Data Complete" <<
-                                                                    std::endl;
-        } else {
-            std::cout << "No images found. " <<
-                    "Please check the Path Directory: " << posDir << std::endl;
-            return 0;
-        }
-
-        // Now load negative images
-        std::cout << "Loading Negative Images" << std::endl;
-        detector.loadNegImages(static_cast<cv::String>(negDir), windowSize);
-        if (detector.getImgListSize("negative") > 0) {
-            std::cout << "Loading Negative Training Data Complete" <<
-                                                                    std::endl;
-        } else {
-            std::cout << "No images found. " <<
-                    "Please check the Path Directory: " << negDir << std::endl;
+        // Load images
+        bool state = train.readData(static_cast<cv::String>(annotationPath),
+                        static_cast<cv::String>(posDir),
+                        static_cast<cv::String>(negDir), windowSize, true);
+        if (!state) {
             return 0;
         }
 
@@ -128,20 +115,20 @@ int main() {
         // For Positive Images
         std::cout << "Extracting HOG features and storing in a " <<
                      "vector for Positive Images" << std::endl;
-        detector.getHOGfeatures(windowSize, "positive");
+        train.getHOGfeatures(windowSize, "positive");
         // Assign Positive labels
-        size_t positiveCount = detector.getListSize();
-        detector.labels.assign(positiveCount, 0);
+        size_t positiveCount = train.getListSize();
+        train.labels.assign(positiveCount, 0);
         std::cout << "Done getting HOG Features for Positive Images" <<
                                                                 std::endl;
 
         // For Negative Images
         std::cout << "Extracting HOG features and storing in a " <<
                      "vector for Negative Images" << std::endl;
-        detector.getHOGfeatures(windowSize, "negative");
+        train.getHOGfeatures(windowSize, "negative");
         // Assign Negative labels
-        size_t negativeCount = detector.getListSize() - positiveCount;
-        detector.labels.insert(detector.labels.end(), negativeCount, 1);
+        size_t negativeCount = train.getListSize() - positiveCount;
+        train.labels.insert(train.labels.end(), negativeCount, 1);
         std::cout << "Done getting HOG Features for Negative Images" <<
                                                                 std::endl;
 
@@ -162,11 +149,11 @@ int main() {
                 svmName = "../data/classifier/svmClassifier";
 
             // Start training the SVM classifier
-            detector.trainSVM(true, svmName);
+            train.trainSVM(true, svmName);
         } else if (isEqual(saveClassifier, "no") ||
                         isEqual(saveClassifier, "n")) {
             // Start training the SVM classifier
-            detector.trainSVM(false, "");
+            train.trainSVM(false, "");
         } else {
             std::cout << "Invalid Input" << std::endl;
             return 0;
@@ -183,7 +170,7 @@ int main() {
         // Test Classifier
         detector.hog_user.winSize = windowSize;
         detector.hog_user.cellSize = cv::Size(4, 4);
-        detector.hog_user.setSVMDetector(detector.getClassifier());
+        detector.hog_user.setSVMDetector(train.getClassifier());
         cv::Rect r = detector.testClassifier(static_cast<cv::String>(testDir),
                                              windowSize, true, "User");
         std::cout << "Program Finshed" << std::endl;
@@ -220,7 +207,7 @@ int main() {
                 svmName = "../data/classifier/svmClassifier";
 
             // Initialize the classifier
-            detector.setClassifier(cv::ml::SVM::load(svmName));
+            train.setClassifier(cv::ml::SVM::load(svmName));
 
             // Set directory for Testing Images
             std::cout << "Give the Path for Testing Images " <<
@@ -231,10 +218,9 @@ int main() {
                 testDir = "../data/test/pos/";
 
             // Test Classifier
-            Detect detector;
             detector.hog_user.winSize = windowSize;
             detector.hog_user.cellSize = cv::Size(4, 4);
-            detector.hog_user.setSVMDetector(detector.getClassifier());
+            detector.hog_user.setSVMDetector(train.getClassifier());
             cv::Rect r = detector.testClassifier(testDir, windowSize,
                                                  true, "User");
             std::cout << "Program Finshed" << std::endl;
